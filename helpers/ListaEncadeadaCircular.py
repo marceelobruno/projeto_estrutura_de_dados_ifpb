@@ -185,7 +185,20 @@ class Lista:
         except AssertionError:
             raise ListaException(f'A posicao não pode ser um número negativo')
       
-    def percorrer(self, saltos):
+    def percorrer(self, posicao:int, saltos:int):
+
+        contador = 1 
+        cursor = self.__head
+        while contador <= posicao:
+            cursor = cursor.next
+            contador +=1
+        print(cursor.data)
+        contador = 1
+        for i in range(saltos):
+            if cursor.next == None:
+                cursor = self.__head
+            cursor = cursor.next
+        print(cursor.data)
         
 
 
@@ -204,5 +217,17 @@ class Lista:
 
         str = str[:-2] + " ]"
         return str
+
+
+
+l1 = Lista()
+l1.inserir(1,10)
+l1.inserir(2,20)
+l1.inserir(3,30)
+l1.inserir(4,40)
+l1.inserir(5,50)
+l1.inserir(6,60)
+l1.percorrer(3,5)
+
 
 
