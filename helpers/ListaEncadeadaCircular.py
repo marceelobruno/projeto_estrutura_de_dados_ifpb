@@ -189,16 +189,24 @@ class Lista:
 
         contador = 1 
         cursor = self.__head
-        while contador <= posicao:
+        while contador < posicao:
             cursor = cursor.next
             contador +=1
-        print(cursor.data)
+        # print(cursor.data)
+        
         contador = 1
-        for i in range(saltos):
+        while contador < saltos:
             if cursor.next == None:
                 cursor = self.__head
             cursor = cursor.next
+            contador +=1
         print(cursor.data)
+
+        # for i in range(1,saltos-1):
+        #     if cursor.next == None:
+        #         cursor = self.__head
+        #     cursor = cursor.next
+        # print(cursor.data)
         
 
 
@@ -227,7 +235,12 @@ l1.inserir(3,30)
 l1.inserir(4,40)
 l1.inserir(5,50)
 l1.inserir(6,60)
-l1.percorrer(3,5)
+print(l1)
+l1.percorrer(1,1)
+l1.percorrer(1,2)
+l1.percorrer(1,3)
+l1.percorrer(1,4)
+l1.percorrer(1,5)
 
 
 
