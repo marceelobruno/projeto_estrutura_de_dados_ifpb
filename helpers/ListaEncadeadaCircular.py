@@ -201,7 +201,7 @@ class Lista:
                 cursor.next = self.__head
             else:
                 cursor = cursor.next
-                print(cursor.data)
+                # print(cursor.data)
                 contador +=1
         contRemover = self.busca(cursor.data)
         # print(contRemover)
@@ -216,10 +216,11 @@ class Lista:
             return str
 
         cursor = self.__head
-
-        while( cursor != None ):
+        tamanho = 0
+        while( tamanho != self.__tamanho ):
             str += f'{cursor.data}, '
             cursor = cursor.next
+            tamanho +=1
 
         str = str[:-2] + " ]"
         return str
