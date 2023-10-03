@@ -55,6 +55,7 @@ class Lista:
     def __init__(self):
         self.__head = None
         self.__tamanho = 0
+        
 
     def estaVazia(self):
         return self.__tamanho == 0 
@@ -113,7 +114,7 @@ class Lista:
             cursor = cursor.next
             contador += 1
             
-        raise ListaException(f'O valor {valor} não está armazenado na lista')
+        raise ListaException(f'O valor {chave} não está armazenado na lista')
 
     def inserir(self, posicao:int, carga:any ):
         try:
@@ -185,9 +186,35 @@ class Lista:
         except AssertionError:
             raise ListaException(f'A posicao não pode ser um número negativo')
       
-    def percorrer(self, saltos):
-        
+    def percorrer(self, posicao:int, saltos:int):
+        try:
+            
+            assert  not self.estaVazia(), f'Lista está vazia.'
+            assert posicao > 0 and posicao <= len(self), f'Posicao invalida. Lista contém {self.__tamanho} elementos'
 
+            contador = 1 
+            cursor = self.__head
+            while contador < posicao:
+                cursor = cursor.next
+                contador +=1
+            
+            contador = 0
+            
+            while contador < saltos:
+                if cursor.next == None:
+                    cursor.next = self.__head
+                else:
+                    cursor = cursor.next
+                    contador +=1
+            contRemover = self.busca(cursor.data)
+            cursor = self.__head
+            return contRemover
+        
+        except AssertionError as ae:
+            raise ListaException(ae)
+        except TypeError:
+            raise ListaException(f'Parâmetros "posicao" e "saltos" devem ser números inteiros.')          
+        
 
     def __str__(self):
 
@@ -197,10 +224,11 @@ class Lista:
             return str
 
         cursor = self.__head
-
-        while( cursor != None ):
+        tamanho = 0
+        while( tamanho != self.__tamanho ):
             str += f'{cursor.data}, '
             cursor = cursor.next
+            tamanho +=1
 
         str = str[:-2] + " ]"
         return str
