@@ -55,6 +55,7 @@ class Lista:
     def __init__(self):
         self.__head = None
         self.__tamanho = 0
+        
 
     def estaVazia(self):
         return self.__tamanho == 0 
@@ -113,7 +114,7 @@ class Lista:
             cursor = cursor.next
             contador += 1
             
-        raise ListaException(f'O valor {valor} não está armazenado na lista')
+        raise ListaException(f'O valor {chave} não está armazenado na lista')
 
     def inserir(self, posicao:int, carga:any ):
         try:
@@ -186,29 +187,26 @@ class Lista:
             raise ListaException(f'A posicao não pode ser um número negativo')
       
     def percorrer(self, posicao:int, saltos:int):
-
+       
         contador = 1 
         cursor = self.__head
         while contador < posicao:
             cursor = cursor.next
             contador +=1
-        # print(cursor.data)
         
-        contador = 1
+        contador = 0
+        
         while contador < saltos:
             if cursor.next == None:
-                cursor = self.__head
-            cursor = cursor.next
-            contador +=1
-        print(cursor.data)
-
-        # for i in range(1,saltos-1):
-        #     if cursor.next == None:
-        #         cursor = self.__head
-        #     cursor = cursor.next
-        # print(cursor.data)
-        
-
+                cursor.next = self.__head
+            else:
+                cursor = cursor.next
+                print(cursor.data)
+                contador +=1
+        contRemover = self.busca(cursor.data)
+        # print(contRemover)
+        cursor = self.__head
+        return contRemover
 
     def __str__(self):
 
@@ -225,22 +223,5 @@ class Lista:
 
         str = str[:-2] + " ]"
         return str
-
-
-
-l1 = Lista()
-l1.inserir(1,10)
-l1.inserir(2,20)
-l1.inserir(3,30)
-l1.inserir(4,40)
-l1.inserir(5,50)
-l1.inserir(6,60)
-print(l1)
-l1.percorrer(1,1)
-l1.percorrer(1,2)
-l1.percorrer(1,3)
-l1.percorrer(1,4)
-l1.percorrer(1,5)
-
 
 
