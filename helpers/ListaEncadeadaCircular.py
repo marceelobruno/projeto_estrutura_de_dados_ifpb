@@ -187,26 +187,34 @@ class Lista:
             raise ListaException(f'A posicao não pode ser um número negativo')
       
     def percorrer(self, posicao:int, saltos:int):
-       
-        contador = 1 
-        cursor = self.__head
-        while contador < posicao:
-            cursor = cursor.next
-            contador +=1
-        
-        contador = 0
-        
-        while contador < saltos:
-            if cursor.next == None:
-                cursor.next = self.__head
-            else:
+        try:
+            
+            assert  not self.estaVazia(), f'Lista está vazia.'
+            assert posicao > 0 and posicao <= len(self), f'Posicao invalida. Lista contém {self.__tamanho} elementos'
+
+            contador = 1 
+            cursor = self.__head
+            while contador < posicao:
                 cursor = cursor.next
-                # print(cursor.data)
                 contador +=1
-        contRemover = self.busca(cursor.data)
-        # print(contRemover)
-        cursor = self.__head
-        return contRemover
+            
+            contador = 0
+            
+            while contador < saltos:
+                if cursor.next == None:
+                    cursor.next = self.__head
+                else:
+                    cursor = cursor.next
+                    contador +=1
+            contRemover = self.busca(cursor.data)
+            cursor = self.__head
+            return contRemover
+        
+        except AssertionError as ae:
+            raise ListaException(ae)
+        except TypeError:
+            raise ListaException(f'Parâmetros "posicao" e "saltos" devem ser números inteiros.')          
+        
 
     def __str__(self):
 
