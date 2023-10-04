@@ -78,7 +78,7 @@ class Jogo:
                 self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__rodada +=1
             
-            print(f'Vencedor após {self.__rodada} Rodadas é: {jogadores.elemento(1)}')
+            print(f'Vencedor após {self.__rodada-1} Rodadas é: {jogadores.elemento(1)}')
 
         except AssertionError as ae:
             raise JogoException(ae)

@@ -221,12 +221,11 @@ class Lista:
                     self.__ponteiro = cursor.next
                     if self.ponteiro == None:
                         self.__ponteiro = self.__head
-                    contador +=1
+                contador +=1
                 
                 self.__ponteiro = self.__ponteiro.data
 
             contRemover = self.busca(cursor.data)
-            print(f'Ponteiro: {self.__ponteiro}')
             return contRemover
         
         except AssertionError as ae:
