@@ -12,9 +12,11 @@ Projeto para disciplina Estrutura de Dados, do curso Sistemas para Internet - In
 
 Este projeto foi desenvolvido por:
 
-Luiz Fernando - [GitHub](https://github.com/LuizFernando12) `<br>`
-Marcelo Bruno - [GitHub](https://github.com/marceelobruno) `<br>`
+Luiz Fernando - [GitHub](https://github.com/LuizFernando12)
+<br>
 Lucas Kaique - [GitHub](https://github.com/LucasKaiquee)
+<br>
+Marcelo Bruno - [GitHub](https://github.com/marceelobruno)
 
 ## Contribuição
 
