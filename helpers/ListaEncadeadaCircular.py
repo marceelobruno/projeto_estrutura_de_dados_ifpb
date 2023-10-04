@@ -1,6 +1,8 @@
+
 '''
 Classe que representa um nó na memória
 '''
+#Lista Encadeada Circular 
 
 class ListaException(Exception):
     """Classe de exceção lançada quando uma violação de ordem genérica
@@ -55,6 +57,16 @@ class Lista:
     def __init__(self):
         self.__head = None
         self.__tamanho = 0
+        self.__ponteiro = None
+
+    @property
+    def ponteiro(self):
+        return self.__ponteiro
+        
+    @ponteiro.setter
+    def ponteiro(self,value):
+        self.__ponteiro = value
+        
 
     def estaVazia(self):
         return self.__tamanho == 0 
@@ -103,21 +115,22 @@ class Lista:
     def busca(self, chave:any)->int:
         if (self.estaVazia()):
             raise ListaException(f'Lista vazia')
-
+        
         cursor = self.__head
         contador = 1
 
         while( cursor != None ):
             if( cursor.data == chave):
                 return contador
+        
             cursor = cursor.next
             contador += 1
             
-        raise ListaException(f'O valor {valor} não está armazenado na lista')
+        raise ListaException(f'O valor {chave} não está armazenado na lista')
 
     def inserir(self, posicao:int, carga:any ):
         try:
-            assert posicao > 0 and posicao <= len(self)+1, f'Posicao invalida. Lista contém {self.__tamanho} elementos' 
+            assert posicao > 0 and posicao <= len(self)+1, f'Posicao invalida . Lista contém {self.__tamanho} elementos' 
 
             # CONDICAO 1: insercao se a lista estiver vazia
             if (self.estaVazia()):
@@ -150,8 +163,8 @@ class Lista:
 
         except TypeError:
             raise ListaException(f'A posição deve ser um número inteiro')            
-        except AssertionError:
-            raise ListaException(f'A posicao não pode ser um número negativo ou 0 (zero)')
+        except AssertionError as ae:
+            raise ListaException(ae)
 
 
 
@@ -185,9 +198,40 @@ class Lista:
         except AssertionError:
             raise ListaException(f'A posicao não pode ser um número negativo')
       
-    def percorrer(self, saltos):
-        
+    def percorrer(self, posicao:int, saltos:int):
+        try:
+            
+            assert  not self.estaVazia(), f'Lista está vazia.'
+            assert posicao > 0 and posicao <= len(self), f'Posicao invalida. Lista contém {self.__tamanho} elementos'
 
+            contador = 1 
+            cursor = self.__head
+            while contador < posicao:
+                cursor = cursor.next
+                contador +=1
+            
+            contador = 0
+            
+            while contador < saltos:
+                if cursor.next == None:
+                    cursor = self.__head
+                    self.__ponteiro = cursor.next
+                else:
+                    cursor = cursor.next
+                    self.__ponteiro = cursor.next
+                    if self.ponteiro == None:
+                        self.__ponteiro = self.__head
+                contador +=1
+                
+                self.__ponteiro = self.__ponteiro.data
+
+            contRemover = self.busca(cursor.data)
+            return contRemover
+        
+        except AssertionError as ae:
+            raise ListaException(ae)
+        except TypeError:
+            raise ListaException(f'Parâmetros "posicao" e "saltos" devem ser números inteiros.')          
 
     def __str__(self):
 
@@ -197,12 +241,11 @@ class Lista:
             return str
 
         cursor = self.__head
-
-        while( cursor != None ):
+        tamanho = 0
+        while( tamanho != self.__tamanho ):
             str += f'{cursor.data}, '
             cursor = cursor.next
+            tamanho +=1
 
         str = str[:-2] + " ]"
         return str
-
-
