@@ -3,6 +3,7 @@ import random
 import time
 
 from helpers.ListaEncadeadaCircular import Lista
+from helpers.PilhaSequencial import Pilha
 
 
 # criar as exceções e implementar nos metodos
@@ -21,35 +22,65 @@ class Jogo:
         self.__removido = None
         self.__vencedores = 1
         self.__jogadores = Lista()
+        self.__pilhaRemovidos = Pilha()
 
-    def quantParticipantes(self):
+    def quantParticipantes(self) ->int:
+        """Este método retorna a quantidade de participantes inseridos no self.__participantes.
+
+        Returns:
+            int: Retorna a quantidade de participantes. 
+        """
         return len(self.__participantes)
 
     def contemParticipantes(self) -> bool:
+        """Este método retorna um valor booleano se a lista estiver vazia ou não.
+
+        Returns:
+            bool: Retorna True se existir participante ou False se não existir.
+        """
         if self.__jogadores.estaVazia():
             return False
         else:
             return True
 
-    def inserirParticipante(self, name: str):
+    def inserirParticipante(self, name: str) -> None:
+        """Este método insere o participante dentro do vetor self.__participantes.
+
+        Args:
+            name (str): nome do participante a ser inserido
+
+        Raises:
+            JogoException: Sobe uma exceção caso o usuário tente adicionar o mesmo
+            nome mais de uma vez.
+        """
         if name in self.__participantes:
             raise JogoException(
                 "Participante já foi inserido, por favor insira outro nome.")
 
         self.__participantes.append(name)
 
-    def numVencedores(self, quantidade: int):
-        # Criar exceçâo, a quantidade de vencedores deve estar entre 1 e o numero de participantes -1.
+    def numVencedores(self, quantidade: int) -> None:
+        """Este método determina o número de vencedores da partida.
+
+        Args:
+            quantidade (int): Quantidade de vencedores.
+
+        Raises:
+            JogoException: Sobe uma exceção caso a quantidade informada for um número menor 
+            que 1 ou maior igual à quantidade de participantes.
+        """
         try:
             assert 1 <= quantidade <= self.quantParticipantes()- 1, 'Insira um numero entre a margem apresentada.'
             self.__vencedores = quantidade 
         except AssertionError as ae:
             raise JogoException(ae)
 
-    def sortearInicializador(self):
+    def sortearInicializador(self) -> None:
+        """Sorteia a posição que o método percorrer iniciará.
+        """
         self.__inicializador = random.randint(1, len(self.__participantes))
 
-    def __str__(self):
+    def __str__(self) -> str:
         if not self.contemParticipantes():
             str = 'Não há ninguém para jogar'
             return str
@@ -86,6 +117,7 @@ class Jogo:
 
                 time.sleep(1)
                 self.__removido = jogadores.remover(removido)
+                
 
                 self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__rodada += 1
