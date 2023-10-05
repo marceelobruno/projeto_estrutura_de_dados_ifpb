@@ -1,5 +1,5 @@
 from helpers.Jogo import Jogo, JogoException
-# ORIGINAL
+# PARA COMPARAR
 try:    
     print('Bem Vindo ao Circuito Bomba !!')
     while True:
@@ -16,6 +16,7 @@ try:
             except AssertionError as ae:
                 print(ae)
 
+
         if menuInicial == 1: 
             while True:
                 try:    
@@ -29,11 +30,8 @@ try:
                 if (jogo.quantParticipantes() == numParticipantes):
                     break
 
-
         if menuInicial == 2:
-            load = jogo.carregaJogo()
-            numParticipantes = len(load)
-
+            pass
         while True:
             #teste commit
             try:
@@ -51,7 +49,7 @@ try:
         if jogarNovamente == 'n':
             print('Obrigado por jogar')
             break
-
+    
 except JogoException as le:
     print(le)
 

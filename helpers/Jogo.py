@@ -40,7 +40,11 @@ class Jogo:
 
     def numVencedores(self, quantidade: int):
         # Criar exceçâo, a quantidade de vencedores deve estar entre 1 e o numero de participantes -1.
-        self.__vencedores = quantidade
+        try:
+            assert 1 <= quantidade <= self.quantParticipantes()- 1, 'Insira um numero entre a margem apresentada.'
+            self.__vencedores = quantidade 
+        except AssertionError as ae:
+            raise JogoException(ae)
 
     def sortearInicializador(self):
         self.__inicializador = random.randint(1, len(self.__participantes))
@@ -87,11 +91,9 @@ class Jogo:
                 self.__rodada += 1
 
             if self.__vencedores == 1:
-                print(f'Vencedor após {self.__rodada -
-                      1} Rodadas é: {jogadores.elemento(1)}')
+                print(f'Vencedor após {self.__rodada -1} Rodadas é: {jogadores.elemento(1)}')
             else:
-                print(f'Os Vencedores após {
-                      self.__rodada-1} Rodadas são: {jogadores}')
+                print(f'Os Vencedores após {self.__rodada-1} Rodadas são: {jogadores}')
         except AssertionError as ae:
             raise JogoException(ae)
 
