@@ -235,7 +235,7 @@ class Lista:
 
     def __str__(self):
 
-        str = 'Lista: [ '
+        str = '[ '
         if self.estaVazia():
             str+= ']'
             return str
