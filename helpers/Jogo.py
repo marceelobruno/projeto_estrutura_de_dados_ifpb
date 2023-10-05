@@ -100,7 +100,6 @@ class Jogo:
 
     def carregaJogo(self, players: list = ['ronaldo', 'rivaldo', 'ronaldinho', 'kaká']):
         # Preencha a Lista abaixo com os nomes dos participantes que deseja
-        # participantes = ['luiz','marcelo','lucas','fabio','leo']
         participantes = players
 
         # Variavel para criação/leitura de caminho relativo.
