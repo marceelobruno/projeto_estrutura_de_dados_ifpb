@@ -6,12 +6,16 @@ try:
         jogo = Jogo()
         menuInicial = int(input('Digite 1 para iniciar um jogo manualmente -- Digite 2 para carregar um arquivo de texto.'))
         if menuInicial == 1: 
+            
             numParticipantes = int(input('Digite a quantidade de jogadores: '))
             while True:
-                jogador = input('Insira o nome do jogador:')
-                jogo.inserirParticipante(jogador)
-                if (jogo.quantParticipantes() == numParticipantes):
-                    break
+                try:
+                    jogador = input('Insira o nome do jogador:')
+                    jogo.inserirParticipante(jogador)
+                    if (jogo.quantParticipantes() == numParticipantes):
+                        break
+                except JogoException as e:
+                    print(e)
 
         if menuInicial == 2:
             pass

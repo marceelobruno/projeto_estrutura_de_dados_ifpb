@@ -29,7 +29,10 @@ class Jogo:
             return True
 
     def inserirParticipante(self, name:str):
-        #fazer a verificação de nomes repitidos
+        
+        if name in self.__participantes:
+            raise JogoException(f"Participante já foi inserido, por favor insira outro nome.")
+            
         self.__participantes.append(name)
 
     def numVencedores(self, quantidade:int): 
