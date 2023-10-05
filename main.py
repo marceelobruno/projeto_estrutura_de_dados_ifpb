@@ -1,5 +1,5 @@
 from helpers.Jogo import Jogo, JogoException
-# ORIGINAL
+
 try:    
     print('Bem Vindo ao Circuito Bomba !!')
     while True:
@@ -17,18 +17,15 @@ try:
                 print(ae)
 
         if menuInicial == 1: 
+            numParticipantes = int(input("Digite o número de participantes"))
             while True:
-                try:    
-                    numParticipantes = int(input('Digite a quantidade de jogadores: '))
-                    break
-                except ValueError:
-                    print('Digite um numero inteiro.')
-            while True:
-                jogador = input('Insira o nome do jogador:')
-                jogo.inserirParticipante(jogador)
-                if (jogo.quantParticipantes() == numParticipantes):
-                    break
-
+                try:
+                    jogador = input('Insira o nome do jogador:')
+                    jogo.inserirParticipante(jogador)
+                    if (jogo.quantParticipantes() == numParticipantes):
+                        break
+                except JogoException as e:
+                    print(e)
 
         if menuInicial == 2:
             load = jogo.carregaJogo()
@@ -49,7 +46,7 @@ try:
 
         jogarNovamente = input('Deseja rodar novamente o programa (s)im/(n)ão?')
         if jogarNovamente == 'n':
-            print('Obrigado por jogar')
+            print('Obrigado por jogar !')
             break
 
 except JogoException as le:

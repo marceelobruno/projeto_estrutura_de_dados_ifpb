@@ -67,7 +67,6 @@ class Lista:
     def ponteiro(self,value):
         self.__ponteiro = value
         
-
     def estaVazia(self):
         return self.__tamanho == 0 
 
@@ -89,8 +88,6 @@ class Lista:
 
         except AssertionError as ae:
             raise ListaException(ae)
-
-
 
     def modificar(self, posicao:int, carga: any):
  
@@ -219,7 +216,7 @@ class Lista:
         """
         try:
             
-            assert  not self.estaVazia(), f'Lista está vazia.'
+            assert not self.estaVazia(), f'Lista está vazia.'
             assert posicao > 0 and posicao <= len(self), f'Posicao invalida. Lista contém {self.__tamanho} elementos'
 
         #Este primeiro bloco irá localizar a posição, passada como argumento,
@@ -249,8 +246,7 @@ class Lista:
                 contador +=1
                 
                 self.__ponteiro = self.__ponteiro.data
-            #Esta variável salva a posição em que o cursor parou utilizando o método busca,
-            # que usa como parâmetro a carga a ser encontrada na lista.
+
             contRemover = self.busca(cursor.data)
             return contRemover
         
