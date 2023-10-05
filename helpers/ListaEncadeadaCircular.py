@@ -67,7 +67,6 @@ class Lista:
     def ponteiro(self,value):
         self.__ponteiro = value
         
-
     def estaVazia(self):
         return self.__tamanho == 0 
 
@@ -89,8 +88,6 @@ class Lista:
 
         except AssertionError as ae:
             raise ListaException(ae)
-
-
 
     def modificar(self, posicao:int, carga: any):
  
@@ -201,7 +198,7 @@ class Lista:
     def percorrer(self, posicao:int, saltos:int):
         try:
             
-            assert  not self.estaVazia(), f'Lista está vazia.'
+            assert not self.estaVazia(), f'Lista está vazia.'
             assert posicao > 0 and posicao <= len(self), f'Posicao invalida. Lista contém {self.__tamanho} elementos'
 
             contador = 1 
@@ -222,11 +219,9 @@ class Lista:
                     if self.ponteiro == None:
                         self.__ponteiro = self.__head
                 contador +=1
-                
-                self.__ponteiro = self.__ponteiro.data
 
-            contRemover = self.busca(cursor.data)
-            return contRemover
+            posicaoFinal = self.busca(cursor.data)
+            return posicaoFinal
         
         except AssertionError as ae:
             raise ListaException(ae)

@@ -23,10 +23,10 @@ class Jogo:
         return len(self.__participantes)
     
     def contemParticipantes(self) -> bool:
-        if self.__jogadores.estaVazia():
-            return False
-        else:
-            return True
+       if self.__jogadores.estaVazia():
+           return False
+       else:
+           return True
 
     def inserirParticipante(self, name:str):
         
@@ -59,7 +59,7 @@ class Jogo:
     
     def iniciarJogo(self):
         try:
-            #assert self.__participantes == [], 'Por favor insira os participantes antes.'
+            assert not self.contemParticipantes(), 'Por favor insira os participantes antes.'
             
             for i in range(len(self.__participantes)):
                 self.__jogadores.inserir(i+1, self.__participantes[i])
@@ -80,7 +80,7 @@ class Jogo:
                 time.sleep(1)
                 self.__removido = jogadores.remover(removido)
                 
-                self.__inicializador = jogadores.busca(jogadores.ponteiro)
+                self.__inicializador = jogadores.busca(jogadores.ponteiro.data)
                 self.__rodada +=1
             
 
