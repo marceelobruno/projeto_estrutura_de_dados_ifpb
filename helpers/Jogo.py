@@ -19,6 +19,9 @@ class Jogo:
         self.__vencedores = 1
         self.__jogadores = Lista()
 
+    def quantParticipantes(self):
+        return len(self.__participantes)
+    
     def contemParticipantes(self) -> bool:
         if self.__jogadores.estaVazia():
             return False
@@ -26,16 +29,15 @@ class Jogo:
             return True
 
     def inserirParticipante(self, name:str):
+        #fazer a verificação de nomes repitidos
         self.__participantes.append(name)
 
     def numVencedores(self, quantidade:int): 
         #Criar exceçâo, a quantidade de vencedores deve estar entre 1 e o numero de participantes -1.
         self.__vencedores = quantidade
-        return self.__vencedores
 
     def sortearInicializador(self):
         self.__inicializador = random.randint(1, len(self.__participantes))
-        return self.__inicializador
 
     def __str__(self):
 
@@ -62,9 +64,9 @@ class Jogo:
             jogadores = self.__jogadores
             self.sortearInicializador()
 
-            rodadas = len(jogadores)
+            rodadas = len(self.__participantes) - self.__vencedores
             
-            while self.__rodada < rodadas:
+            while self.__rodada <= rodadas:
 
                 self.__tempo = random.randint(4, 15)
                 removido = self.__jogadores.percorrer(self.__inicializador, self.__tempo)
@@ -78,8 +80,11 @@ class Jogo:
                 self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__rodada +=1
             
-            print(f'Vencedor após {self.__rodada-1} Rodadas é: {jogadores.elemento(1)}')
 
+            if self.__vencedores == 1:
+                print(f'Vencedor após {self.__rodada-1} Rodadas é: {jogadores.elemento(1)}')
+            else:
+                print(f'Os Vencedores após {self.__rodada-1} Rodadas são: {jogadores}')   
         except AssertionError as ae:
             raise JogoException(ae)
         
