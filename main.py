@@ -4,13 +4,12 @@ try:
     print('Bem Vindo ao Circuito Bomba !!')
     while True:
         jogo = Jogo()
-        menuInicial = int(input('Digite 1 para iniciar um jogo manualmente -- Digite 2 para carregar um arquivo de texto.'))
+        menuInicial = int(input('Digite 1 para iniciar um jogo manualmente -- Digite 2 para carregar um arquivo de texto. '))
         if menuInicial == 1: 
-            
             numParticipantes = int(input('Digite a quantidade de jogadores: '))
             while True:
                 try:
-                    jogador = input('Insira o nome do jogador:')
+                    jogador = input('Insira o nome do jogador: ')
                     jogo.inserirParticipante(jogador)
                     if (jogo.quantParticipantes() == numParticipantes):
                         break
@@ -18,7 +17,8 @@ try:
                     print(e)
 
         if menuInicial == 2:
-            pass
+            load = jogo.carregaJogo()
+            numParticipantes = len(load)
 
         numVencedores = int(input(f'Para inicar o jogo defina a quantidade de vencedores(1 - {numParticipantes - 1}: '))
         jogo.numVencedores(numVencedores)
@@ -30,7 +30,7 @@ try:
         if jogarNovamente == 'n':
             print('Obrigado por jogar')
             break
-    
+
 except JogoException as le:
     print(le)
 
