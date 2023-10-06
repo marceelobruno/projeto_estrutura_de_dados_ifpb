@@ -20,13 +20,16 @@ try:
             while True:
                 try:   
                     numParticipantes = int(input('Digite o numero de participantes: '))
+                    assert numParticipantes > 1, "São necessários no mínimo dois jogadores."
                     break
                 except ValueError:
                     print('Digite um numero inteiro.')
+                except AssertionError as ae:
+                    print(ae)
             while True:
                 try:
                     
-                    jogador = input('Insira o nome do jogador (sem espaços no começo):')
+                    jogador = input('Insira o nome do jogador (sem espaços no começo):').title()
                     jogo.inserirParticipante(jogador)
                     if (jogo.quantParticipantes() == numParticipantes):
                         break
@@ -38,7 +41,6 @@ try:
             numParticipantes = len(load)
 
         while True:
-            #teste commit
             try:
                 numVencedores = int(input(f'Para iniciar o jogo defina a quantidade de vencedores(1 - {numParticipantes - 1}): '))
                 jogo.numVencedores(numVencedores)
@@ -50,12 +52,12 @@ try:
 
         jogo.iniciarJogo()
 
-        jogarNovamente = input('Deseja rodar novamente o programa (s)im/(n)ão?')
-        if jogarNovamente == 'n':
+        jogarNovamente = input('Deseja rodar novamente o programa (s)im/(n)ão?').lower()
+        if jogarNovamente == 's':
+            continue
+        else:
             print('Obrigado por jogar !')
             break
-
-
 
 except Exception as e:
     print('Algo inesperado aconteceu...')
