@@ -102,6 +102,7 @@ class Jogo:
                 self.__jogadores.inserir(i+1, self.__participantes[i])
 
             jogadores = self.__jogadores
+            pilhaRemovidos = self.__pilhaRemovidos
             self.sortearInicializador()
 
             rodadas = len(self.__participantes) - self.__vencedores
@@ -117,11 +118,16 @@ class Jogo:
 
                 time.sleep(1)
                 self.__removido = jogadores.remover(removido)
+                pilhaRemovidos.empilha(self.__removido)
                 
 
                 self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__rodada += 1
 
+            print(f"""
+        Percurso para a vitória:
+        {pilhaRemovidos}
+                    """)
             if self.__vencedores == 1:
                 print(f'Vencedor após {self.__rodada -1} Rodadas é: {jogadores.elemento(1)}')
             else:
