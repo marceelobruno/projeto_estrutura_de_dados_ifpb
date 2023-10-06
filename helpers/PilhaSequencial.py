@@ -200,9 +200,8 @@ class Pilha:
             separados por vírgula e entre colchetes. A ordem de exibição é
             da base para o topo da pilha.   
         """
-        s = '['
+        s = ''
         for i in range(self.__topo+1):
-            s += str(self.__dado[i]) + ','
-        s = s.rstrip(',') # remove a última vírgula
-        s += ']<-topo'
+            s += str(self.__dado[i]) + ' > '
+        s = s.rstrip('> ') # remove a última vírgula
         return s
