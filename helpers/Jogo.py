@@ -111,6 +111,7 @@ class Jogo:
     def iniciarJogo(self):
         try:
             #assert self.__participantes == [], 'Por favor insira os participantes antes.'
+            #assert self.__participantes == [], 'Por favor insira os participantes antes.'
             
             for i in range(len(self.__participantes)):
                 self.__jogadores.inserir(i+1, self.__participantes[i])
@@ -134,6 +135,7 @@ class Jogo:
                 self.__removido = jogadores.remover(removido)
                 pilhaRemovidos.empilha(self.__removido)
                 
+                self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__rodada +=1
             
