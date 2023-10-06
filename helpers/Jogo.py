@@ -3,6 +3,7 @@ import random
 import time
 
 from helpers.ListaEncadeadaCircular import Lista
+from helpers.PilhaSequencial import Pilha
 
 
 # criar as exceções e implementar nos metodos
@@ -21,35 +22,79 @@ class Jogo:
         self.__removido = None
         self.__vencedores = 1
         self.__jogadores = Lista()
+        self.__pilhaRemovidos = Pilha()
 
-    def quantParticipantes(self):
+    def quantParticipantes(self) ->int:
+        """Este método retorna a quantidade de participantes inseridos no self.__participantes.
+
+        Returns:
+            int: Retorna a quantidade de participantes. 
+        """
         return len(self.__participantes)
 
     def contemParticipantes(self) -> bool:
-       if self.__jogadores.estaVazia():
-           return False
-       else:
-           return True
+        if self.__jogadores.estaVazia():
+            return False
+        else:
+            return True
 
-    def inserirParticipante(self, name: str):
+    def inserirParticipante(self, name: str) -> None:
+        """Este método insere o participante dentro do vetor self.__participantes.
+
+        Args:
+            name (str): nome do participante a ser inserido
+
+        Raises:
+            JogoException: Sobe uma exceção caso o usuário tente adicionar o mesmo
+            nome mais de uma vez.
+        """
+        # Verifica se o primeiro caractere da string é um espaço.
+        if name== "" or name[0] == chr(32):
+            raise JogoException('Nomeie o participante.')
         if name in self.__participantes:
             raise JogoException(
                 "Participante já foi inserido, por favor insira outro nome.")
 
         self.__participantes.append(name)
 
-    def numVencedores(self, quantidade: int):
-        # Criar exceçâo, a quantidade de vencedores deve estar entre 1 e o numero de participantes -1.
+    def inserirParticipanteCarregado(self, name: str) -> None:
+        """Este método insere o participante dentro do vetor self.__participantes.
+
+        Args:
+            name (str): nome do participante a ser inserido
+
+        Raises:
+            JogoException: Sobe uma exceção caso o usuário tente adicionar o mesmo
+            nome mais de uma vez.
+        """
+        if name in self.__participantes:
+            raise JogoException(
+                "Lista com participantes duplicados, por favor refaça a lista com nomes únicos e tente novamente!.")
+
+        self.__participantes.append(name)
+
+    def numVencedores(self, quantidade: int) -> None:
+        """Este método determina o número de vencedores da partida.
+
+        Args:
+            quantidade (int): Quantidade de vencedores.
+
+        Raises:
+            JogoException: Sobe uma exceção caso a quantidade informada for um número menor 
+            que 1 ou maior igual à quantidade de participantes.
+        """
         try:
             assert 1 <= quantidade <= self.quantParticipantes()- 1, 'Insira um numero entre a margem apresentada.'
             self.__vencedores = quantidade 
         except AssertionError as ae:
             raise JogoException(ae)
 
-    def sortearInicializador(self):
+    def sortearInicializador(self) -> None:
+        """Sorteia a posição que o método percorrer iniciará.
+        """
         self.__inicializador = random.randint(1, len(self.__participantes))
 
-    def __str__(self):
+    def __str__(self) -> str:
         if not self.contemParticipantes():
             str = 'Não há ninguém para jogar'
             return str
@@ -66,11 +111,13 @@ class Jogo:
     def iniciarJogo(self):
         try:
             #assert self.__participantes == [], 'Por favor insira os participantes antes.'
+            #assert self.__participantes == [], 'Por favor insira os participantes antes.'
             
             for i in range(len(self.__participantes)):
                 self.__jogadores.inserir(i+1, self.__participantes[i])
 
             jogadores = self.__jogadores
+            pilhaRemovidos = self.__pilhaRemovidos
             self.sortearInicializador()
 
             rodadas = len(self.__participantes) - self.__vencedores
@@ -86,11 +133,17 @@ class Jogo:
 
                 time.sleep(1)
                 self.__removido = jogadores.remover(removido)
+                pilhaRemovidos.empilha(self.__removido)
                 
+                self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__inicializador = jogadores.busca(jogadores.ponteiro)
                 self.__rodada +=1
             
-
+            print(f"""
+        Percurso para a vitória:
+        {pilhaRemovidos}
+                  
+""")
             if self.__vencedores == 1:
                 print(f'Vencedor após {self.__rodada -1} Rodadas é: {jogadores.elemento(1)}')
             else:
@@ -99,10 +152,15 @@ class Jogo:
             raise JogoException(ae)
 
     def carregaJogo(self, players: list = ['ronaldo', 'rivaldo', 'ronaldinho', 'kaká']):
-        # Preencha a Lista abaixo com os nomes dos participantes que deseja
-        # participantes = ['luiz','marcelo','lucas','fabio','leo']
-        participantes = players
+        """Este método carrega previamente uma lista com possíveis
+        jogadores para o jogo Circuito Bomba.
 
+        Args:
+            players (list, optional): Valores default para os participantes do jogo.
+
+        Returns:
+            list: Lista com participantes pré-definidos.
+        """
         # Variavel para criação/leitura de caminho relativo.
         caminho = r'./data'
 
@@ -110,36 +168,25 @@ class Jogo:
         if not os.path.exists(caminho):
             os.makedirs(caminho)
             with open(fr"{caminho}/participantes.txt", "w", encoding='utf-8') as arquivo:
-                for participante in participantes:
-                    arquivo.write(participante + ",")
-        else:
-            with open(fr"{caminho}/participantes.txt", "w", encoding='utf-8') as arquivo:
-                for participante in participantes:
+                for participante in players:
                     arquivo.write(participante + ",")
 
         # Abre o arquivo em modo de leitura
         with open(fr"{caminho}/participantes.txt", "r", encoding='utf-8') as arquivo:
-
             # Lendo todas as linhas do arquivo
             linhas = arquivo.readlines()
-
             # Dividindo cada linha da lista em uma lista de nomes
-            # nomes = [linha.split(",") for linha in linhas]
-
             players = []
             for linha in linhas:
                 players.extend(linha.split(','))
-                jogador = players.extend(linha.split(','))
-                self.inserirParticipante(jogador)
 
             equipo = []
             for e in players:
                 if e == '':
                     continue
-                # else:
                 equipo.append(e)
-
-            for j in equipo:
-                self.inserirParticipante(j)
+                self.inserirParticipanteCarregado(e)
 
             return players[0:-1]
+        
+    

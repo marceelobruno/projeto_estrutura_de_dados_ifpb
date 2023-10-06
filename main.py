@@ -16,11 +16,17 @@ try:
             except AssertionError as ae:
                 print(ae)
 
-        if menuInicial == 1: 
-            numParticipantes = int(input("Digite o número de participantes"))
+        if menuInicial == 1:
+            while True:
+                try:   
+                    numParticipantes = int(input('Digite o numero de participantes: '))
+                    break
+                except ValueError:
+                    print('Digite um numero inteiro.')
             while True:
                 try:
-                    jogador = input('Insira o nome do jogador:')
+                    
+                    jogador = input('Insira o nome do jogador (sem espaços no começo):')
                     jogo.inserirParticipante(jogador)
                     if (jogo.quantParticipantes() == numParticipantes):
                         break
@@ -49,8 +55,7 @@ try:
             print('Obrigado por jogar !')
             break
 
-except JogoException as le:
-    print(le)
 
-# except Exception as e:
-#     print('Algo inesperado aconteceu...')
+
+except Exception as e:
+    print('Algo inesperado aconteceu...')
