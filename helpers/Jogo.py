@@ -64,6 +64,23 @@ class Jogo:
         return str
 
     def iniciarJogo(self):
+        """
+        Inicia o jogo, realiza a jogabilidade e determina o vencedor ou vencedores após várias rodadas.
+
+        Este método executa as seguintes etapas:
+        1. Insere participantes na lista de jogadores.
+        2. Realiza um sorteio para definir o inicializador do jogo.
+        3. Realiza rodadas até que haja apenas um vencedor ou vencedores.
+        
+        Raises:
+            JogoException: Se não houver participantes no jogo.
+
+        Notas:
+            - O jogo continua até que haja apenas um jogador restante ou um grupo de vencedores.
+            - Cada rodada envolve um jogador sendo removido com base em um tempo aleatório.
+            - O jogador removido é determinado pelo tempo e o jogador inicializador.
+            - O jogo é pausado por 1 segundo após cada rodada.
+        """
         try:
             #assert self.__participantes == [], 'Por favor insira os participantes antes.'
             
@@ -100,10 +117,9 @@ class Jogo:
 
     def carregaJogo(self, players: list = ['ronaldo', 'rivaldo', 'ronaldinho', 'kaká']):
         # Preencha a Lista abaixo com os nomes dos participantes que deseja
-        # participantes = ['luiz','marcelo','lucas','fabio','leo']
         participantes = players
 
-        # Variavel para criação/leitura de caminho relativo.
+        # Variavel para criação e/ou leitura de caminho relativo.
         caminho = r'./data'
 
         # Cria o diretório caso o caminho informado não exista.
@@ -112,6 +128,7 @@ class Jogo:
             with open(fr"{caminho}/participantes.txt", "w", encoding='utf-8') as arquivo:
                 for participante in participantes:
                     arquivo.write(participante + ",")
+        # Se o diretório já existir, faz a escrita dos participantes.
         else:
             with open(fr"{caminho}/participantes.txt", "w", encoding='utf-8') as arquivo:
                 for participante in participantes:
@@ -119,27 +136,18 @@ class Jogo:
 
         # Abre o arquivo em modo de leitura
         with open(fr"{caminho}/participantes.txt", "r", encoding='utf-8') as arquivo:
-
-            # Lendo todas as linhas do arquivo
             linhas = arquivo.readlines()
 
             # Dividindo cada linha da lista em uma lista de nomes
-            # nomes = [linha.split(",") for linha in linhas]
-
             players = []
             for linha in linhas:
-                players.extend(linha.split(','))
-                jogador = players.extend(linha.split(','))
-                self.inserirParticipante(jogador)
+                players.append(linha.split(','))
 
-            equipo = []
+            particips = []
             for e in players:
                 if e == '':
                     continue
-                # else:
-                equipo.append(e)
-
-            for j in equipo:
-                self.inserirParticipante(j)
+                particips.append(e)
+                self.inserirParticipante(e)
 
             return players[0:-1]
