@@ -12,7 +12,7 @@ try:
                 break
 
             except ValueError:
-                print('Digite uma das opções.')
+                print('Digite um numero inteiro dentre as opções.')
             except AssertionError as ae:
                 print(ae)
 
@@ -45,8 +45,11 @@ try:
                 numVencedores = int(input(f'Para iniciar o jogo defina a quantidade de vencedores(1 - {numParticipantes - 1}): '))
                 jogo.numVencedores(numVencedores)
                 break
+
             except JogoException as jg:
                 print(jg)
+            except ValueError:
+                print('Insira um numero inteiro dentro da margem apresentada.')
 
         print('Que os jogos começem -_-')
 

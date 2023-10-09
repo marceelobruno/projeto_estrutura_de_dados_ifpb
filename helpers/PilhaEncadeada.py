@@ -1,5 +1,3 @@
-import numpy as np
-
 class PilhaException(Exception):
     """Classe de exceção lançada quando uma violação de acesso aos elementos
        da pilha é identificada.
@@ -11,58 +9,79 @@ class PilhaException(Exception):
         super().__init__(msg)
 
 
-        
+class Node:
+    def __init__(self, dado:any):
+        self.__dado = dado
+        self.__prox = None
+
+    @property
+    def dado(self)->any:
+        return self.__dado
+    
+    @dado.setter
+    def dado(self, dado):
+        self.__dado = dado
+
+    @property
+    def prox(self)->'Node':
+        return self.__prox
+    
+    @prox.setter
+    def prox(self, prox:'Node'):
+        self.__prox = prox
+
+    def temProximo(self)->'Node':
+        return self.__prox != None
+    
+    def __str__(self):
+        return str(self.__dado)
+
+
 class Pilha:
-    """A classe Pilha.py implementa a estrutura de dados "Pilha".
-       A classe permite que qualquer tipo de dado seja armazenada na pilha.
+    """
+    Classe que implementa a estrutura de dados "Pilha" utilizando a técnica
+    simplesmente encadeada.
 
      Attributes:
-        dado (list): uma estrutura de armazenamento dinâmica dos elementos da
-             pilha
+        head (Node): apontador para o nó topo da pilha
+        tamanho (int): quantidade de elementos existentes na pilha
     """
-    def __init__(self, size:int=10):
-        """ Construtor padrão da classe Pilha sem argumentos. Ao instanciar
-            um objeto do tipo Pilha, esta iniciará vazia. 
 
-        Args:
-        ---------------------
-            size (int, opcional): tamanho da pilha. Default é 10.
-
+    def __init__(self):
+        """ Construtor padrão da classe Pilha sem argumentos. 
+            Ao instanciar um objeto do tipo Pilha, esta iniciará 
+            sem elementos. 
         """
-        self.__dado = np.full(size,None)
-        self.__topo = -1
-
-
+        self.__head = None
+        self.__tamanho = 0        
 
     def estaVazia(self)->bool:
-        """ Método que verifica se a pilha está vazia ou não
+        """ Método que verifica se a pilha está vazia.
 
         Returns:
             boolean: True se a pilha estiver vazia, False caso contrário
 
         Examples:
             p = Pilha()
-            ...   # considere que temos internamente na pilha [10,20,30,40]<- topo
+            # considere que temos internamente na pilha  topo->[10,20,30,40]
             if(p.estaVazia()): #
                # instrucoes
         """
-        return True if self.__topo==-1 else False
-    
-
+        return self.__head == None
 
     def __len__(self)->int:
-        """ Método que consulta a quantidade de elementos existentes na pilha
+        """ Método para obter a quantidade de elementos existentes na pilha
 
         Returns:
             int: um número inteiro que determina o número de elementos existentes na pilha
 
         Examples:
             p = Pilha()
-            ...   # considere que temos internamente a pilha [10,20,30,40]<- p
+            # considere que temos internamente a pilha topo->[10,20,30,40]
             print (p.tamanho()) # exibe 4
         """        
-        return self.__topo + 1
 
+        return self.__tamanho
 
     def elemento(self, posicao:int)->any:
         """ Método que recupera o valor armazenado em um determinado elemento da pilha
@@ -83,22 +102,29 @@ class Pilha:
                       quantidade de elementos existentes na pilha.                      
         Examples:
             p = Pilha()
-            # considere que temos internamente a pilha [10,20,30,40]<-topo
+            # considere que temos internamente a pilha topo->[10,20,30,40]
             print (p.elemento(3)) # exibe 30
         """
         try:
-            if self.estaVazia():
-                raise PilhaException(f'Pilha está Vazia.')
-            assert posicao > 0 and posicao <= self.__topo + 1
-            return self.__dado[posicao-1]
+            assert not self.estaVazia(), 'A pilha está vazia'
+            assert posicao > 0 and posicao <= len(self),f'A posicao {posicao} NAO é válida para a pilha de tamanho {self.__tamanho}'
+ 
+            cursor = self.__head
+            contador = 1
+            steps = len(self) - posicao
+            while(cursor != None and contador <= steps ):
+                contador += 1
+                cursor = cursor.prox
+
+            return cursor.dado
+                
         except TypeError:
-            raise PilhaException(f'O tipo de dado para posicao não é um número inteiro')
-        except AssertionError:
-            raise PilhaException(f'A posicao deve ser um número maior que zero e menor igual a {self.__topo+1}')
+            raise PilhaException('Digite um número inteiro referente ao elemento desejado')
+        except AssertionError as ae:
+            raise PilhaException(ae.__str__(),'elemento()')
         except:
             raise
 
-    
     def busca(self, chave:any)->int:
         """ Método que recupera a posicao ordenada, dentro da pilha, em que se
             encontra a chave passada como argumento. No caso de haver mais 
@@ -118,17 +144,21 @@ class Pilha:
 
         Examples:
             p = Pilha()
-            # considere que temos internamente a pilha [10,20,30,40]<-topo
+            # considere que temos internamente na pilha  topo-> [10,20,30,40]
             print (p.elemento(40)) # exibe 4
-        """        
-        for i in range(self.__topo+1):
-            if (self.__dado[i] == chave):
-                return i+1
-        raise PilhaException(f'Chave {chave} nao esta na lista')
-        #    não dá pra fazer com o np.where, pois ele vai procurar no array todo
-        #    resultado = np.where(self.__dado == valor)
-        #    return resultado[0][0]
+        """
 
+        cursor = self.__head
+        contador = 1
+
+        while( cursor != None):
+            if cursor.dado == chave:
+                return (len(self) - contador)+1
+            cursor = cursor.prox
+            contador += 1
+
+        raise PilhaException(f'Chave {chave} nao esta na pilha','busca()')
+        
     def topo(self)->any:
         """ Método que devolve o elemento localizado no topo, sem desempilhá-lo
     
@@ -141,17 +171,14 @@ class Pilha:
                     
         Examples:
             p = Pilha()
-            # considere que temos internamente a pilha [10,20,30,40]
+            ...   # considere que temos internamente a lista [10,20,30,40]
             dado = p.topo()
             print(dado) # exibe 40
         """
-        try:
-            return self.__dado[-1]
-        except IndexError:
-            raise PilhaException(f'Pilha Vazia. Não há elemento no topo')
-        except:
-            raise
-
+        if not self.estaVazia():
+            return self.__head.dado
+        raise PilhaException('A pilha está vazia')
+    
 
     def empilha(self, carga:any):
         """ Método que adiciona um novo elemento ao topo da pilha
@@ -161,15 +188,14 @@ class Pilha:
 
         Examples:
             p = Pilha()
-            # considere a pilha [10,20,30,40]<-topo
+            # considere a pilha  topo->[10,20,30,40]
             p.empilha(50)
             print(p)  # exibe [10,20,30,40,50]
         """
-        if self.__topo == len(self.__dado) - 1:
-            raise PilhaException(f'Pilha Cheia. Não é possível efetuar a inserção')
-        self.__topo += 1
-        self.__dado[self.__topo] = carga
-
+        novo = Node(carga)
+        novo.prox = self.__head
+        self.__head = novo
+        self.__tamanho += 1
 
 
     def desempilha(self)->any:
@@ -189,19 +215,32 @@ class Pilha:
             print(p) # exibe [10,20,30]
             print(dado) # exibe 40
         """
-        if self.estaVazia():
-            raise PilhaException(f'Pilha Vazia. Não é possível efetuar a remoção')
-        carga = self.__dado[self.__topo]
-        self.__topo -= 1
-        return carga
+        if not self.estaVazia():
+            dado = self.__head.dado
+            self.__head = self.__head.prox
+            self.__tamanho -= 1
+            return dado
+        raise PilhaException('A pilha está vazia')
+   
+
+
     
     def __str__(self):
         """ Método que devolve uma string contendo os elementos da pilha
             separados por vírgula e entre colchetes. A ordem de exibição é
             da base para o topo da pilha.   
         """
+        cursor = self.__head
+        primeiro = True
         s = ''
-        for i in range(self.__topo+1):
-            s += str(self.__dado[i]) + ' > '
-        s = s.rstrip('> ') # remove a última vírgula
+        while( cursor != None):
+            if primeiro:
+                s += f'{cursor.dado} >'
+                primeiro = False
+            else:
+                s += f' {cursor.dado} >'
+            cursor = cursor.prox
+        s = s.rstrip('> ')
         return s
+
+   
