@@ -89,7 +89,8 @@ class Jogo:
         """
         try:
             assert 1 <= quantidade <= self.quantParticipantes()- 1, 'Insira um numero entre a margem apresentada.'
-            self.__vencedores = quantidade 
+            self.__vencedores = quantidade
+
         except AssertionError as ae:
             raise JogoException(ae)
 
